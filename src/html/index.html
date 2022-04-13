@@ -35,7 +35,7 @@
       <h3>/user</h3>
       <tr>
         <th>method</th>
-        <th>params</th>
+        <th>url</th>
         <th>body</th>
         <th>returns</th>
       </tr>
@@ -68,6 +68,46 @@
         <td>/login</td>
         <td>username, password</td>
         <td>JSONWEBTOKEN if username and password were correct</td>
+      </tr>
+    </table>
+
+
+    <table>
+      <h3>/data</h3>
+      <tr>
+        <th>method</th>
+        <th>params</th>
+        <th>body</th>
+        <th>Authentication</th>
+        <th>returns</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/</td>
+        <td></td>
+        <td></td>
+        <td>All data</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/:username</td>
+        <td></td>
+        <td></td>
+        <td>Data for user</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/initialise</td>
+        <td></td>
+        <td></td>
+        <td>Creates data table (if it does not exist)</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/</td>
+        <td>temperature, humidity</td>
+        <td>Bearer ${token_from_login}</td>
+        <td>Status code 200 if data was saved successfully</td>
       </tr>
     </table>
   </div>

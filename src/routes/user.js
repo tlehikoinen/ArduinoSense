@@ -1,6 +1,6 @@
 /*
 ** USER ROUTER **
-* REQUEST PATH '/data *
+* REQUEST PATH '/user *
 */
 
 const express = require('express')
