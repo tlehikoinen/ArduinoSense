@@ -6,10 +6,12 @@ dotenv.config({
 })
 
 const PORT = process.env.PORT || 5000
-const POSTGRE_URI=process.env.POSTGRE_URI
+const POSTGRE_URI = process.env.POSTGRE_URI
+const SECRET = process.env.SECRET
 
 module.exports = {
   PORT,
-  POSTGRE_URI
+  POSTGRE_URI,
+  SECRET
 }
 
