@@ -30,6 +30,7 @@ BLEByteCharacteristic speedCharacteristic("2A67", BLERead | BLEWrite);  // GATT 
 BLEByteCharacteristic modeCharacteristic("2BA3", BLERead | BLEWrite); // GATT name = "Media state"
 BLEByteCharacteristic temperatureCharasteristic("2A6E", BLERead | BLENotify); // GATT name = "Temperature"
 BLEByteCharacteristic humidityCharasteristic("2A6F", BLERead | BLENotify);  // GATT name = "Humidity"
+BLEByteCharacteristic ledcharasteristic("2A57", BLERead | BLEWrite);//led
 
 void setup() {
   Serial.begin(9600);
@@ -53,6 +54,8 @@ void setup() {
   speedService.addCharacteristic(modeCharacteristic); // Mode (0 = AUTO, 1 = USER)
   speedService.addCharacteristic(temperatureCharasteristic);  // Temperature data
   speedService.addCharacteristic(humidityCharasteristic); // Humidity data
+  speedService.addCharacteristic(ledcharasteristic);
+
 
   // add service
   BLE.addService(speedService);
@@ -60,6 +63,7 @@ void setup() {
   // set the initial value for the characteristic:
   speedCharacteristic.writeValue(0);  // Default speed = 0
   modeCharacteristic.writeValue(1); // Default mode = USER
+  ledcharasteristic.writeValue(0);
 
   // start advertising
   BLE.advertise();
@@ -71,7 +75,6 @@ void loop() {
   // Read sensor values
   int newTemperature = HTS.readTemperature();
   int newHumidity = HTS.readHumidity();
-
   if (central.connected()) {
     if (speedCharacteristic.written()) {  // User has send new speed
       Serial.println("Written to speed");
@@ -91,7 +94,22 @@ void loop() {
         humidity = newHumidity;
         humidityCharasteristic.writeValue(newHumidity);
     }
+    switch (ledcharasteristic.value()) {   // any value other than 0
+          case 01:
+            //Serial.println("LED on");
+            digitalWrite(LED_BUILTIN, HIGH);            // will turn the LED on
+            break;
+         default:
+            //Serial.println(F("LED off"));
+            digitalWrite(LED_BUILTIN, LOW);          // will turn the LED off
+            break;
+    }
+   
   }
+   if(!central){
+      digitalWrite(LED_BUILTIN, LOW);          // will turn the LED off if disconnected
+      ledcharasteristic.writeValue(0);
+    }
 
   switch(mode) {
     case AUTO_MODE: {
