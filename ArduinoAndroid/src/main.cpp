@@ -26,7 +26,7 @@ int analogSteps[] = { 200, 400, 600, 800, 1024 }; // Five speed stages for value
 int pwmSteps[] = { 0, 63, 126, 190, 255 };  // Five speed stages for PWM output values (0-255)
 
 BLEService speedService("180A"); // BLE Service
-BLEByteCharacteristic speedCharacteristic("2A67", BLERead | BLEWrite);  // GATT name "Location and Speed"
+BLEByteCharacteristic speedCharacteristic("2A67", BLERead | BLEWrite | BLENotify);  // GATT name "Location and Speed"
 BLEByteCharacteristic modeCharacteristic("2BA3", BLERead | BLEWrite); // GATT name = "Media state"
 BLEByteCharacteristic temperatureCharasteristic("2A6E", BLERead | BLENotify); // GATT name = "Temperature"
 BLEByteCharacteristic humidityCharasteristic("2A6F", BLERead | BLENotify);  // GATT name = "Humidity"
@@ -114,7 +114,13 @@ void loop() {
   switch(mode) {
     case AUTO_MODE: {
       int sensorValue = analogRead(TEMP_SENSOR);
-      analogWrite(FET_GATE, pwmSteps[sensorReadingToSpeedStage(sensorValue)]);
+      int compareSpeedStage = sensorReadingToSpeedStage(sensorValue);
+      if (compareSpeedStage != speed) {
+        speed = compareSpeedStage;
+        analogWrite(FET_GATE, pwmSteps[speed]);
+        speedCharacteristic.writeValue(speed);
+      }
+      //analogWrite(FET_GATE, pwmSteps[sensorReadingToSpeedStage(sensorValue)]);
       break;
     }
 
