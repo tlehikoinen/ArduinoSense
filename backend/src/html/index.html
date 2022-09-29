@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1>Arduino Sense Backend Documentation</h1>
+    <p>This API is used to save temperature and humidity data<br />
+    </p>
+
+    <table>
+      <h3>/user</h3>
+      <tr>
+        <th>method</th>
+        <th>url</th>
+        <th>body</th>
+        <th>returns</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/</td>
+        <td></td>
+        <td>Users</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/:id</td>
+        <td></td>
+        <td>User with ID</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/initialise</td>
+        <td></td>
+        <td>Creates user table (if it does not exist)</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/</td>
+        <td>username, password</td>
+        <td>Status code 200 if user was created successfully</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/login</td>
+        <td>username, password</td>
+        <td>JSONWEBTOKEN if username and password were correct</td>
+      </tr>
+    </table>
+
+
+    <table>
+      <h3>/data</h3>
+      <tr>
+        <th>method</th>
+        <th>params</th>
+        <th>body</th>
+        <th>Authentication</th>
+        <th>returns</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/</td>
+        <td></td>
+        <td></td>
+        <td>All data</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/:username</td>
+        <td></td>
+        <td></td>
+        <td>Data for user</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/initialise</td>
+        <td></td>
+        <td></td>
+        <td>Creates data table (if it does not exist)</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/</td>
+        <td>temperature, humidity</td>
+        <td>Bearer ${token_from_login}</td>
+        <td>Status code 200 if data was saved successfully</td>
+      </tr>
+    </table>
+  </div>
+
+</body>
+
+</html>
